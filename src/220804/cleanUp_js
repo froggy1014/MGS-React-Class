@@ -1,0 +1,31 @@
+import React, { useEffect, useRef } from "react";
+
+const App = () => {
+  const [value, setValue] = React.useState("");
+  const input = useRef();
+
+  useEffect(() => {
+    console.log("useEffect 진입");
+    const onClick = () => {
+      console.log(input.current.value);
+    };
+
+    document.addEventListener("click", onClick);
+  }, []);
+
+  return (
+    <input
+      value={value}
+      ref={input}
+      type="number"
+      onChange={(e) => {
+        setValue(e.target.value);
+      }}
+    />
+  );
+};
+export default App;
+
+// 클린업 함수 만들기
+// ref를 이용한 마지막 값 가져오기
+// useState의 set(prev => prev)로 가져오기
