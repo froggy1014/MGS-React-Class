@@ -1,71 +1,47 @@
-import {useState} from 'react'
-import { BrowserRouter, Routes, Route, useParams,
-  Link } from "react-router-dom";
-import Form from "./Components/Form/Form";
+import styled, { keyframes } from "styled-components";
+import { useState } from "react";
 
-const Posting = ({list}) => {
-  const params = useParams('');
-  
-  
-
-  return (
-    <div>
-      <span>id:{params.id}</span> <br/>
-      <span>글내용: {list[params.id-1]}</span>  <br/>
-      <Link to={'/hello'}>return to write</Link>
-    </div>
-  )
+const boxFade = (color) => keyframes`
+0% {
+background-color: black;
 }
-
-function Hello({list, setList}) {
-  
-  const [input, setInput] = useState('');
-  // const [posts, setPosts] = useState([]);
-  
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // setPosts(prev => [...posts, input]);
-    setList(prev => [...list, input])
-    setInput('');
-  }
-
-  return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <h1>글쓰기 화면</h1>
-        <input 
-          value={input} 
-          type="text" 
-          onChange={e => setInput(e.target.value)}
-        />
-        <button>등록</button> <br/>
-        {list.map((contents, i) => (
-           <Link 
-              key={i+1} 
-              to={{pathname : `/post/${i+1}`}}
-              state = {contents}
-           >
-           <h2>{contents}</h2>
-           </Link>
-        ))}
-      </form>
-    </>
-  )
+50% {
+background-color: ${color}
 }
+100% {
+background-color: red;
+}
+`;
+
+const Box = styled.div`
+width: 200px;
+height:200px;
+animation:  ${props => boxFade(props.color)} 3s infinite;
+`;
+
 
 
 const App = () => {
-  const [list, setList] = useState([])
+  const [color, setColor] = useState();
+  const [value, setValue] = useState();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setColor(value)
+    setValue('');
+  }
+  console.log(value)
+  console.log(color)
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Form />} />
-        <Route path="/hello" element={<Hello list={list} setList={setList}/>} />
-        <Route path="/post/:id" element={<Posting list={list}/>} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Box color={color}/>
+      <form onSubmit={handleSubmit}>    
+        <input type='text' value={value} onChange={(e) => setValue(e.target.value)}/>
+      <button type="submit">클릭</button>
+      </form>
+    </>
   );
+
 };
 
 export default App;

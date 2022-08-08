@@ -1,15 +1,16 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 
-export default function Hello() {
+export default function Hello({list, setList}) {
   
   const [input, setInput] = useState('');
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setPosts(prev => [...posts, input]);
+    // setPosts(prev => [...posts, input]);
+    setList(prev => [...list, input])
     setInput('');
   }
 
@@ -23,16 +24,15 @@ export default function Hello() {
           onChange={e => setInput(e.target.value)}
         />
         <button>등록</button> <br/>
-        {posts.map((contents, i) => {
-    
-          return <Link 
-                    key={i+1} 
-                    to={{pathname : `/post/${i+1}`}}
-                    state = {contents}
-                  >
-                  <h2>{contents}</h2>
-                  </Link>
-        })}
+        {list.map((contents, i) => (
+           <Link 
+              key={i+1} 
+              to={{pathname : `/post/${i+1}`}}
+              state = {contents}
+           >
+           <h2>{contents}</h2>
+           </Link>
+        ))}
       </form>
     </>
   )
